@@ -1,0 +1,26 @@
+@startuml c4_l1_context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+title System Context Diagram - Library Management System
+
+Person(member, "Member", "Borrows, reserves, renews books, and pays fines")
+Person(librarian, "Librarian", "Manages catalog items and processes loans and returns")
+Person(admin, "Admin", "Manages users, policies, and reports")
+
+System(lms, "Library Management System", "Manages catalog, loans, members, reservations, and fines")
+
+System_Ext(email, "Email Service", "Sends reminders and confirmations")
+System_Ext(payment, "Payment Gateway", "Processes fine payments")
+System_Ext(rfid, "RFID/Barcode Subsystem", "Scans items for check-in and check-out")
+System_Ext(isbn, "ISBN Lookup Service", "Fetches book metadata")
+
+Rel(member, lms, "Searches catalog, borrows, reserves, renews, and pays fines")
+Rel(librarian, lms, "Catalogs items, processes returns, and issues fines")
+Rel(admin, lms, "Manages users and configures policies")
+
+Rel(lms, email, "Sends overdue reminders and loan confirmations", "SMTP")
+Rel(lms, payment, "Charges fines", "HTTPS/REST")
+Rel(lms, rfid, "Reads tags and barcodes", "Serial/USB")
+Rel(lms, isbn, "Fetches book metadata", "HTTPS")
+@enduml

@@ -1,0 +1,35 @@
+@startuml c4_l2_container
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+title Container Diagram - Library Management System
+
+Person(member, "Member")
+Person(librarian, "Librarian")
+Person(admin, "Admin")
+
+System_Boundary(lms, "Library Management System") {
+  Container(memberApp, "Member Web App", "React, TypeScript", "Catalog search, loans, reservations, and account actions")
+  Container(staffApp, "Staff Web App", "React, TypeScript", "Catalog management, circulation, and administrative tasks")
+  Container(api, "Backend API", "Node.js, Express", "Business logic, authentication, and orchestration")
+  ContainerDb(db, "Database", "PostgreSQL", "Books, members, loans, fines, and reservations")
+  Container(worker, "Notification Worker", "Node.js, cron", "Scheduled overdue reminders and confirmation messages")
+}
+
+System_Ext(email, "Email Service")
+System_Ext(payment, "Payment Gateway")
+System_Ext(rfid, "RFID/Barcode Subsystem")
+
+Rel(member, memberApp, "Uses", "HTTPS")
+Rel(librarian, staffApp, "Uses", "HTTPS")
+Rel(admin, staffApp, "Uses", "HTTPS")
+
+Rel(memberApp, api, "Calls", "HTTPS/JSON")
+Rel(staffApp, api, "Calls", "HTTPS/JSON")
+Rel(api, db, "Reads and writes", "SQL")
+Rel(worker, db, "Reads due loans", "SQL")
+Rel(worker, email, "Sends reminders", "SMTP")
+Rel(api, payment, "Charges fines", "HTTPS/REST")
+Rel(staffApp, rfid, "Reads scans", "Local driver")
+
+@enduml
