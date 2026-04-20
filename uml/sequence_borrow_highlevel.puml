@@ -1,0 +1,25 @@
+@startuml sequence_borrow_highlevel
+title Borrow Book - High-Level Sequence (Stakeholders)
+
+actor Member
+actor Librarian
+participant "Library System" as LMS
+participant "Email Service" as Email
+
+Member -> Librarian : Ask to borrow a book
+Librarian -> LMS : Submit borrow request (memberId, bookId)
+LMS -> LMS : Authenticate staff and validate member
+LMS -> LMS : Check book availability
+
+alt Validation failed or book unavailable
+  LMS --> Librarian : Borrow denied with reason
+  Librarian --> Member : Explain issue and next step
+else Borrow approved
+  LMS -> LMS : Create loan and update book status
+  LMS --> Librarian : Borrow confirmed (due date)
+  Librarian --> Member : Hand over book and due date
+  LMS -> Email : Send loan confirmation
+  Email --> Member : Confirmation email
+end
+
+@enduml

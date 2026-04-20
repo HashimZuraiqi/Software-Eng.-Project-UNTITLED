@@ -1,0 +1,81 @@
+@startuml sequence_borrow_detailed
+title Borrow Book - Detailed Sequence (Developers)
+
+actor Librarian
+participant "Staff UI" as UI
+participant "API\n(LoanController)" as API
+participant "AuthService" as Auth
+participant "PolicyService" as Policy
+participant "MemberRepo" as MRepo
+participant "BookRepo" as BRepo
+participant "LoanRepo" as LRepo
+participant "Notification Worker" as Notify
+database "PostgreSQL" as DB
+participant "Email Service" as Email
+
+Librarian -> UI : Scan member card and book barcode
+UI -> API : POST /loans {memberId, bookId}
+API -> Auth : validateSession(token)
+
+alt Invalid session
+  Auth --> API : invalid
+  API --> UI : 401 { "unauthorized" }
+  UI --> Librarian : Ask user to sign in again
+else Session valid
+  Auth --> API : valid
+
+  API -> MRepo : findById(memberId)
+  MRepo -> DB : SELECT * FROM members WHERE id = memberId
+  DB --> MRepo : member
+  MRepo --> API : Member
+
+  API -> Policy : checkBorrowEligibility(member)
+
+  alt Member blocked or limit reached
+    Policy --> API : reject(reason)
+    API --> UI : 403 { "borrow_not_allowed" }
+    UI --> Librarian : Show reason and stop flow
+  else Member eligible
+    Policy --> API : allowed
+
+    API -> BRepo : findAvailableCopy(bookId)
+    BRepo -> DB : SELECT * FROM books WHERE id = bookId
+    DB --> BRepo : book
+    BRepo --> API : Book
+
+    alt Book unavailable
+      API --> UI : 409 { "unavailable" }
+      UI --> Librarian : Offer reservation option
+    else Book available
+      API -> DB : BEGIN TRANSACTION
+
+      API -> LRepo : create(memberId, bookId, dueDate)
+      LRepo -> DB : INSERT INTO loans (...)
+      DB --> LRepo : loanId
+      LRepo --> API : Loan
+
+      API -> BRepo : updateStatus(bookId, BORROWED)
+      BRepo -> DB : UPDATE books SET status = 'BORROWED' WHERE id = bookId
+      DB --> BRepo : updated
+
+      API -> MRepo : incrementActiveLoanCount(memberId)
+      MRepo -> DB : UPDATE members SET active_loans = active_loans + 1
+      DB --> MRepo : updated
+
+      API -> DB : COMMIT
+
+      API -> Notify : enqueueLoanConfirmation(memberId, loanId)
+      Notify -->> API : queued
+
+      API --> UI : 201 { loan }
+      UI --> Librarian : Show success and receipt
+
+      Notify -> DB : SELECT member_email, due_date, book_title FROM loans_view WHERE loan_id = loanId
+      DB --> Notify : notification payload
+      Notify -> Email : sendLoanConfirmation(payload)
+      Email -->> Notify : accepted
+    end
+  end
+end
+
+@enduml
