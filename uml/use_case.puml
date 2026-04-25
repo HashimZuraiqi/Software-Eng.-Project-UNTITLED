@@ -35,10 +35,14 @@ Librarian --> UC7
 Librarian --> UC8
 Librarian --> UC2
 Librarian --> UC3
+Librarian --> UC1
+Librarian --> UC5
+Librarian --> UC9
 
 ' Admin flows
 Admin --> UC9
 Admin --> UC7
+Admin --> UC8
 
 ' Authenticate is included (mandatory) in member operations
 UC2 ..> UC_Auth : <<include>>
@@ -50,6 +54,7 @@ UC6 ..> UC_Auth : <<include>>
 ' Authenticate is included in staff operations
 UC7 ..> UC_Auth : <<include>>
 UC8 ..> UC_Auth : <<include>>
+UC9 ..> UC_Auth : <<include>>
 
 ' Extend: Pay Fine can occur as part of Return Book (if fines exist)
 UC3 ..> UC6 : <<extend>>
