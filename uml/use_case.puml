@@ -57,12 +57,12 @@ UC8 ..> UC_Auth : <<include>>
 UC9 ..> UC_Auth : <<include>>
 
 ' Extend: Pay Fine can occur as part of Return Book (if fines exist)
-UC3 ..> UC6 : <<extend>>
+UC6 ..> UC3 : <<extend>>
 
 ' Extend: Send Notification happens after successful Borrow, Return, and Reserve
-UC2 ..> UC_Notify : <<extend>>
-UC3 ..> UC_Notify : <<extend>>
-UC4 ..> UC_Notify : <<extend>>
+UC_Notify ..> UC2 : <<extend>>
+UC_Notify ..> UC3 : <<extend>>
+UC_Notify ..> UC4 : <<extend>>
 
 ' External system flows
 UC_Notify --> Email
