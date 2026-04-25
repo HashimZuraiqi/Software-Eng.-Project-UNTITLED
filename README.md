@@ -59,7 +59,7 @@ Software-Eng.-Project-UNTITLED/
 
 | Member | Role | Commits |
 |---|---|---|
-| Hashim Zuraiqi | System Description, C4 Level 1 and Level 2 diagrams, repository setup | 6 |
+| Hashim Zuraiqi | System Description, C4 Level 1 and Level 2 diagrams, repository setup | 7 |
 | Mohammad Abu Taha | Activity Diagram with swimlanes, repo refactoring| 8 |
 | Faris Asaad | Sequence Diagrams (high-level and detailed) | 3 |
 | Hytham Fares | Use Case Diagram and Use Case Descriptions | 3 |
