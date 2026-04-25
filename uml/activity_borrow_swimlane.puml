@@ -1,0 +1,45 @@
+@startuml activity_borrow_swimlane
+title Borrow Book - Activity Diagram with Swimlanes
+
+|Member|
+start
+:Bring book to counter;
+:Present member card;
+
+|Librarian|
+:Scan member card;
+:Scan book barcode;
+
+|Backend API|
+:Authenticate member;
+if (Member in good standing?) then (yes)
+  :Check book availability;
+  if (Book available?) then (yes)
+    if (Already reserved by other?) then (no)
+      |Database|
+      :Insert loan record;
+      :Update book status = BORROWED;
+      |Backend API|
+      :Compute due date;
+      :Trigger confirmation email;
+      |Librarian|
+      :Print receipt;
+      |Member|
+      :Receive book + receipt;
+      stop
+    else (yes)
+      |Librarian|
+      :Show "reserved for another member";
+      stop
+    endif
+  else (no)
+    |Librarian|
+    :Show "unavailable / offer reserve";
+    stop
+  endif
+else (no)
+  |Librarian|
+  :Show "account blocked - clear fines";
+  stop
+endif
+@enduml
