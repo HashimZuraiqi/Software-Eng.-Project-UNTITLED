@@ -19,6 +19,7 @@ System_Boundary(lms, "Library Management System") {
 System_Ext(email, "Email Service")
 System_Ext(payment, "Payment Gateway")
 System_Ext(rfid, "RFID/Barcode Subsystem")
+System_Ext(isbn, "ISBN Lookup Service")
 
 Rel(member, memberApp, "Uses", "HTTPS")
 Rel(librarian, staffApp, "Uses", "HTTPS")
@@ -30,6 +31,7 @@ Rel(api, db, "Reads and writes", "SQL")
 Rel(worker, db, "Reads due loans", "SQL")
 Rel(worker, email, "Sends reminders", "SMTP")
 Rel(api, payment, "Charges fines", "HTTPS/REST")
+Rel(api, isbn, "Fetches book metadata", "HTTPS")
 Rel(staffApp, rfid, "Reads scans", "Local driver")
 
 @enduml
