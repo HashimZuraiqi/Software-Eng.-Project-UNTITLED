@@ -49,7 +49,7 @@ if ($wkhtmltopdf) {
     Write-Host "  Save to: $docsDir" -ForegroundColor White
     
     # Open the file automatically
-    Start-Process $htmlOut
+    Start-Process -FilePath "explorer.exe" -ArgumentList "`"$htmlOut`""
 }
 
 Pop-Location
