@@ -16,4 +16,7 @@ Requested --> Rejected : librarianRejectsLoan [copyUnavailable] / notifyMember
 Active --> Renewed : memberRenewsLoan [renewalCount < 2] / incrementRenewalCount; extendDueDate
 Renewed --> Active : renewalConfirmed
 
+Active --> Overdue : dueDatePassed [bookNotReturned] / calculateFine
+Renewed --> Overdue : dueDatePassed [bookNotReturned] / calculateFine
+
 @enduml
