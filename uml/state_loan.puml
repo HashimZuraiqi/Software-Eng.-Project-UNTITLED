@@ -13,4 +13,7 @@ state Rejected
 Requested --> Active : librarianApprovesLoan [copyAvailable] / recordIssueDate
 Requested --> Rejected : librarianRejectsLoan [copyUnavailable] / notifyMember
 
+Active --> Renewed : memberRenewsLoan [renewalCount < 2] / incrementRenewalCount; extendDueDate
+Renewed --> Active : renewalConfirmed
+
 @enduml
