@@ -1,0 +1,12 @@
+@startuml state_loan
+title Loan Lifecycle — State Diagram
+
+state Requested
+state Active
+state Renewed
+state Overdue
+state Returned
+state Closed
+state Rejected
+
+@enduml
