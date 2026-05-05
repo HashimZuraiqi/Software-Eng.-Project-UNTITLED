@@ -19,4 +19,11 @@ Renewed --> Active : renewalConfirmed
 Active --> Overdue : dueDatePassed [bookNotReturned] / calculateFine
 Renewed --> Overdue : dueDatePassed [bookNotReturned] / calculateFine
 
+Active --> Returned : memberReturnsBook / recordReturnDate
+Renewed --> Returned : memberReturnsBook / recordReturnDate
+Overdue --> Returned : memberReturnsBook / recordReturnDate; issueFineNotice
+Returned --> Closed : fineSettledOrNone / archiveLoan
+Rejected --> Closed : / archiveLoan
+Closed --> [*]
+
 @enduml
