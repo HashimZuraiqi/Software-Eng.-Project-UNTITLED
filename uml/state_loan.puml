@@ -9,4 +9,8 @@ state Returned
 state Closed
 state Rejected
 
+[*] --> Requested : memberRequestsLoan
+Requested --> Active : librarianApprovesLoan [copyAvailable] / recordIssueDate
+Requested --> Rejected : librarianRejectsLoan [copyUnavailable] / notifyMember
+
 @enduml
