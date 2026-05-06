@@ -1,0 +1,34 @@
+@startuml state_loan
+skinparam StateBackgroundColor #EEF2FF
+skinparam StateBorderColor #4F46E5
+skinparam ArrowColor #374151
+skinparam StateAttributeFontColor #111827
+skinparam style strictuml
+title Loan Lifecycle — State Diagram
+
+state Requested
+state Active
+state Renewed
+state Overdue
+state Returned
+state Closed
+state Rejected
+
+[*] --> Requested : memberRequestsLoan
+Requested --> Active : librarianApprovesLoan [copyAvailable] / recordIssueDate
+Requested --> Rejected : librarianRejectsLoan [copyUnavailable] / notifyMember
+
+Active --> Renewed : memberRenewsLoan [renewalCount < 2] / incrementRenewalCount; extendDueDate
+Renewed --> Active : renewalConfirmed
+
+Active --> Overdue : dueDatePassed [bookNotReturned] / calculateFine
+Renewed --> Overdue : dueDatePassed [bookNotReturned] / calculateFine
+
+Active --> Returned : memberReturnsBook / recordReturnDate
+Renewed --> Returned : memberReturnsBook / recordReturnDate
+Overdue --> Returned : memberReturnsBook / recordReturnDate; issueFineNotice
+Returned --> Closed : fineSettledOrNone / archiveLoan
+Rejected --> Closed : / archiveLoan
+Closed --> [*]
+
+@enduml
