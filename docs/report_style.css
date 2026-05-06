@@ -1,3 +1,4 @@
+/* ── Screen styles ───────────────────────────────────────────────────── */
 body {
   font-family: "Segoe UI", Arial, sans-serif;
   font-size: 11pt;
@@ -23,16 +24,160 @@ th { background-color: #2c3e50; color: white; padding: 8px 12px; text-align: lef
 td { padding: 7px 12px; border: 1px solid #ccc; vertical-align: top; }
 tr:nth-child(even) { background-color: #f5f7fa; }
 
-img { max-width: 100%; height: auto; display: block; margin: 16px auto; border: 1px solid #ddd; border-radius: 4px; }
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
 
 code { background: #f0f0f0; padding: 2px 5px; border-radius: 3px; font-size: 9.5pt; }
-pre { background: #f0f0f0; padding: 12px; border-radius: 4px; overflow-x: auto; }
+pre  { background: #f0f0f0; padding: 12px; border-radius: 4px; overflow-x: auto; }
 
-blockquote { border-left: 4px solid #2c3e50; margin: 12px 0; padding: 8px 16px; background: #f9f9f9; color: #555; }
+blockquote {
+  border-left: 4px solid #2c3e50;
+  margin: 12px 0;
+  padding: 8px 16px;
+  background: #f9f9f9;
+  color: #555;
+}
 
 hr { border: none; border-top: 1px solid #ddd; margin: 32px 0; }
 
+/* ── Print styles ────────────────────────────────────────────────────── */
 @media print {
-  body { margin: 0; padding: 20px; }
-  h2 { page-break-before: auto; }
+
+  /* Set @page margin to 0 to completely disable Chrome's default URL/Page Number headers */
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  /* Reset screen layout and add padding to create the margins inside the printable area */
+  body {
+    max-width: 100%;
+    margin: 0;
+    padding: 15mm 15mm 15mm 15mm;
+    font-size: 10pt;
+    line-height: 1.4;
+    color: #000;
+  }
+
+  /* Force the main Report to start on a new page (README is the 1st h1, Report is the 2nd) */
+  h1:nth-of-type(2) {
+    page-break-before: always;
+    break-before: always;
+  }
+
+  /* Reduce all heading vertical space */
+  h1 {
+    font-size: 18pt;
+    margin-top: 0;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #2c3e50;
+  }
+  h2 {
+    font-size: 14pt;
+    margin-top: 20px;
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #aaa;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+  h3 {
+    font-size: 12pt;
+    margin-top: 12px;
+    margin-bottom: 4px;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+  h4 {
+    font-size: 11pt;
+    margin-top: 10px;
+    margin-bottom: 2px;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  /* Paragraphs */
+  p {
+    margin: 6px 0 8px 0;
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* ── Images: never split, fit on page ────────────────────────────── */
+  img {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    page-break-before: auto;
+    break-before: auto;
+    width: 95%;            /* Fill the page nicely */
+    max-height: 160mm;     /* Reduced so it doesn't force page jumps as often */
+    object-fit: contain;
+    display: block;
+    margin: 10px auto;
+    border: 1px solid #ccc;
+    border-radius: 0;
+  }
+
+  /* Container paragraph that holds an img */
+  p:has(> img) {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin: 6px 0;
+  }
+
+  /* ── Tables: allow breaking across pages to prevent blank spaces ───── */
+  table {
+    font-size: 9.5pt;
+    margin: 10px 0;
+    page-break-inside: auto; /* allow table to flow naturally */
+    break-inside: auto;
+    width: 100%;
+    border-collapse: collapse;
+  }
+  tr {
+    page-break-inside: avoid; /* keep rows intact */
+    break-inside: avoid;
+  }
+  thead {
+    display: table-header-group;
+  }
+  th {
+    padding: 6px 8px;
+    background-color: #2c3e50 !important;
+    color: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  td {
+    padding: 5px 8px;
+    border: 1px solid #ccc;
+  }
+  tr:nth-child(even) {
+    background-color: #f5f7fa !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ── Misc ────────────────────────────────────────────────────────── */
+  hr {
+    border-top: 1px solid #bbb;
+    margin: 12px 0;
+  }
+
+  pre, blockquote {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin: 8px 0;
+    padding: 8px 12px;
+  }
+
+  /* Suppress URL expansion after links */
+  a[href]::after { content: ""; }
 }

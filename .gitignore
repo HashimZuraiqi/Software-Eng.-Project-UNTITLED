@@ -1,2 +1,11 @@
-generate_pdf.ps1
-update_report.ps1
+# Generated output — do not commit the intermediate HTML or the final PDF
+docs/se_report_group_10.html
+docs/se_report_group_10.pdf
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+
+/uml/class_diagram.puml
+/docs/images/class_diagram.png

@@ -58,8 +58,8 @@ The Library Management System is a database-driven system that automates core li
 | Diagram | Source File | Description |
 |---|---|---|
 | State Diagram — Loan Lifecycle | `uml/state_loan.puml` | Loan states from Requested through Closed, with state-stimulus table |
-| DFD Level 0 | `uml/dfd_l0.drawio` | Context DFD: system as single process with all external entities |
-| DFD Level 1 | `uml/dfd_l1.drawio` | Decomposed into 5 sub-processes and 6 data stores |
+| DFD Level 0 | `uml/dfd_l0.puml` | Context DFD: system as single process with all external entities |
+| DFD Level 1 | `uml/dfd_l1.puml` | Decomposed into 5 sub-processes and 6 data stores |
 
 ---
 
@@ -71,21 +71,17 @@ Software-Eng.-Project-UNTITLED/
 ├── docs/
 │   ├── report.md                      # Consolidated Software Engineering report
 │   ├── se_report_group_10.pdf         # Final PDF submission
-│   ├── explanations/                  # Reference drafts kept for traceability
-│   │   ├── system_description.md
-│   │   ├── sequence_explanation.md
-│   │   └── use_case_descriptions.md
 │   └── images/                        # PNG exports of UML diagrams (embedded in report.md)
-└── uml/                               # Diagram source files (.puml and .drawio)
+└── uml/                               # Diagram source files (.puml)
 ```
 
 ---
 
 ## 5. Contributions
 
-| Member | Role | v1.0.0 Work | v2.0.0 Work |
+| Member | Role | Commits | Work |
 |---|---|---|---|
-| Hashim Zuraiqi | Integration Lead (A) | System Description, C4 Level 1 & Level 2, repository setup | Report compilation, README update, PDF generation, consistency pass |
-| Mohammad Abu Taha | Behavior (B) | Activity Diagram with swimlanes | DFD Level 0 and Level 1 |
-| Hytham Fares | Structure (C) | Use Case Diagram and Use Case Descriptions | Class Diagram |
-| Faris Asaad | Behavior (D) | Sequence Diagrams (high-level and detailed) | State Diagram and state-stimulus table |
+| Hashim Zuraiqi | Integration Lead | 17 | System Description, C4 L1 & L2, repo setup, report compilation, PDF pipeline |
+| Faris Asaad | Behavior | 10 | Sequence Diagrams (high-level and detailed), State Diagram, state-stimulus table |
+| Mohammad Abu Taha | Behavior | 8 | Activity Diagram with swimlanes, DFD Level 0 and Level 1 |
+| Hytham Fares | Structure | 3 | Use Case Diagram, Use Case Descriptions, Class Diagram |
