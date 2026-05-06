@@ -1,4 +1,4 @@
-# generate_pdf.ps1
+﻿# generate_pdf.ps1
 # Run this script AFTER all diagram PNGs are in docs/images/
 # It generates docs/se_report_group_10.pdf using Pandoc
 # 
@@ -17,7 +17,7 @@ Write-Host "=== Generating HTML report ===" -ForegroundColor Cyan
 Push-Location $docsDir
 & $pandoc report.md --standalone --embed-resources --css report_style.css `
     --resource-path "." `
-    --metadata title="Library Management System — SE Report Group 10" `
+    --metadata title="Library Management System - SE Report Group 10" `
     -o se_report_group_10.html
 
 if ($LASTEXITCODE -eq 0) {
@@ -45,11 +45,13 @@ if ($wkhtmltopdf) {
     Write-Host "=== MANUAL STEP REQUIRED ===" -ForegroundColor Magenta
     Write-Host "Open the HTML file in Chrome or Edge and print to PDF:" -ForegroundColor White
     Write-Host "  File: $htmlOut" -ForegroundColor White
-    Write-Host "  Steps: Open file > Ctrl+P > Save as PDF > 'se_report_group_10.pdf'" -ForegroundColor White
+    $steps = "  Steps: Open file -> Ctrl+P -> Save as PDF -> 'se_report_group_10.pdf'"
+    Write-Host $steps -ForegroundColor White
     Write-Host "  Save to: $docsDir" -ForegroundColor White
     
     # Open the file automatically
-    Start-Process -FilePath "explorer.exe" -ArgumentList "`"$htmlOut`""
+    $arg = "`"$htmlOut`""
+    Start-Process -FilePath "explorer.exe" -ArgumentList $arg
 }
 
 Pop-Location
