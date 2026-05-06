@@ -1,0 +1,155 @@
+@startuml class_diagram
+left to right direction
+skinparam classAttributeIconSize 0
+
+package "Library Management System" {
+
+  abstract class User {
+    +userId : String
+    +name : String
+    +email : String
+    +phone : String
+    +passwordHash : String
+    +login(email: String, password: String) : Boolean
+    +logout() : void
+    +updateProfile(name: String, email: String) : void
+  }
+
+  class Member {
+    +memberId : String
+    +membershipDate : Date
+    +maxLoans : Integer
+    +activeLoanCount : Integer
+    +status : String
+    +searchCatalog(query: String) : List
+    +borrowBook(copyId: String) : Loan
+    +returnBook(loanId: String) : void
+    +reserveBook(itemId: String) : Reservation
+    +renewLoan(loanId: String) : Loan
+    +payFine(fineId: String, amount: Double) : void
+  }
+
+  class Librarian {
+    +staffId : String
+    +department : String
+    +addBookRecord(item: LibraryItem) : void
+    +updateBookRecord(itemId: String) : void
+    +processCheckout(memberId: String, copyId: String) : Loan
+    +processReturn(loanId: String) : void
+    +registerMember(name: String, email: String) : Member
+  }
+
+  class Admin {
+    +adminId : String
+    +adminLevel : String
+    +manageUsers() : void
+    +configurePolicy(policy: String, value: String) : void
+    +generateReport(type: String, dateRange: String) : Report
+  }
+
+  abstract class LibraryItem {
+    +itemId : String
+    +title : String
+    +publisher : String
+    +publicationYear : Integer
+    +subjectTags : List
+    +status : String
+    +getDetails() : String
+    +isAvailable() : Boolean
+  }
+
+  class Book {
+    +isbn : String
+    +author : String
+    +edition : Integer
+    +genre : String
+  }
+
+  class Journal {
+    +issn : String
+    +volume : Integer
+    +issue : Integer
+    +editor : String
+  }
+
+  class Copy {
+    +copyId : String
+    +barcode : String
+    +condition : String
+    +shelfLocation : String
+    +dateAcquired : Date
+    +updateCondition(condition: String) : void
+    +getLocation() : String
+  }
+
+  class Catalog {
+    +catalogId : String
+    +name : String
+    +totalItems : Integer
+    +addItem(item: LibraryItem) : void
+    +removeItem(itemId: String) : void
+    +search(query: String) : List
+  }
+
+  class Loan {
+    +loanId : String
+    +borrowDate : Date
+    +dueDate : Date
+    +returnDate : Date
+    +renewalCount : Integer
+    +status : String
+    +renew() : void
+    +markReturned() : void
+    +isOverdue() : Boolean
+    +computeFine() : Double
+  }
+
+  class Reservation {
+    +reservationId : String
+    +reserveDate : Date
+    +expiryDate : Date
+    +status : String
+    +queuePosition : Integer
+    +cancel() : void
+    +isExpired() : Boolean
+    +notifyReady() : void
+  }
+
+  class Fine {
+    +fineId : String
+    +amount : Double
+    +reason : String
+    +dateIssued : Date
+    +datePaid : Date
+    +status : String
+    +pay(amount: Double) : void
+    +waive() : void
+    +isPaid() : Boolean
+  }
+
+}
+
+' Inheritance relationships
+User <|-- Member
+User <|-- Librarian
+User <|-- Admin
+LibraryItem <|-- Book
+LibraryItem <|-- Journal
+
+' Aggregation and composition
+LibraryItem "1" o-- "0..*" Copy : has >
+Catalog "1" *-- "0..*" LibraryItem : contains >
+
+' Transactional associations
+Member "1" -- "0..*" Loan : borrows >
+Loan "1" -- "1" Copy : of >
+Member "1" -- "0..*" Reservation : places >
+Reservation "0..*" -- "1" LibraryItem : for >
+Loan "0..1" -- "0..1" Fine : generates >
+
+' Layout hints to keep the diagram readable
+Loan -[hidden]- Reservation
+Loan -[hidden]- Fine
+Reservation -[hidden]- Catalog
+
+@enduml
